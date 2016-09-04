@@ -1,0 +1,6 @@
+name: trmsta_android
+description: A new flutter project.
+dependencies:
+  flutter:
+    path: ../../.local/flutter/packages/flutter
+  trmsta_nohttp: ^0.1.2+2
