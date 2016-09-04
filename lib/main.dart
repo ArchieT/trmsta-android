@@ -18,10 +18,15 @@ class TrmStaListNow extends StatefulWidget {
 }
 
 class _TrmStaListNowState extends State<TrmStaListNow> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
+  static final GlobalKey<ScrollableState> _scrollableKey =
+      new GlobalKey<ScrollableState>();
   List<AllSta> _lista;
   DateTime _when;
 
-  void _download() async {
+  void _download() {
     download((String url) => http.read(url)).then((Downloaded down) {
       setState(() {
         _when = down.time;
@@ -30,16 +35,39 @@ class _TrmStaListNowState extends State<TrmStaListNow> {
     });
   }
 
+  Future<Null> _refresh() async {
+    Completer<Null> completer = new Completer<Null>();
+    _download();
+    return completer.future.then((_) {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    Widget body = new ScrollConfiguration(child: new MaterialList(
+        type: MaterialListType.threeLine,
+        padding: const EdgeInsets.all(8.0),
+        scrollableKey: _scrollableKey,
+        children: (_lista == null
+            ? new List<ListItem>()
+            : (_lista.map((AllSta item) {
+                return new ListItem(
+                    isThreeLine: true,
+                    leading: new CircleAvatar(
+                        child: new Text(item.locrow.stanum.toString())),
+                    title: new Text(item.data.addr),
+                    subtitle: new Text(item.locrow.row.toString()));
+              })))));
+    body = new RefreshIndicator(
+        key: _refreshIndicatorKey,
+        child: body,
+        refresh: _refresh,
+        scrollableKey: _scrollableKey,
+        location: RefreshIndicatorLocation.top);
     return new Scaffold(
+        key: _scaffoldKey,
+        scrollableKey: _scrollableKey,
         appBar: new AppBar(title: new Text('Stations ${_when.toString()}')),
-        body: new ScrollableList(
-            children: _lista == null
-                ? []
-                : _lista.map((AllSta our) => new Text(our.toString(),
-                    key: new ValueKey<int>(our.locrow.stanum))),
-            itemExtent: 50.0),
+        body: body,
         floatingActionButton: new FloatingActionButton(
             onPressed: _download,
             tooltip: 'Download',
