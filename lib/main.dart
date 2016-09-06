@@ -71,7 +71,7 @@ class _TrmStaListNowState extends State<TrmStaListNow> {
                         item.locrow.row.toString() +
                         ourloc
                             .distanceTo(new JavaLocation(
-                                getLastLocation(),
+                                getLastLocation().jobj,
                                 item.locrow.location.lat.toDouble(),
                                 item.locrow.location.lon.toDouble()))
                             .toString() +
