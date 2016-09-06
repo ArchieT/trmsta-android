@@ -11,14 +11,14 @@ class JavaLocation {
   final double lon;
   JavaLocation.fromJava(JavaObject jloc):
   this.jobj=jloc,
-  this.lat=jloc.getLatitude(),
-  this.lon=jloc.getLongitude();
+  this.lat=jloc.Latitude,
+  this.lon=jloc.Longitude;
   JavaLocation(sparse jloc, double lat, double lon):
   this.lat=lat,
   this.lon=lon,
   this.jobj=jloc,
-  this.jobj.setLatitude(lat),
-  this.jobj.setLongitude(lon);
+  this.jobj.Latitude = lat,
+  this.jobj.Longitude = lon;
   num distanceTo(JavaLocation another) => this.jobj.distanceTo(another.jobj);
 }
 
