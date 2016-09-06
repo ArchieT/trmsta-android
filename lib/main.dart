@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import "package:trmsta_nohttp/trmsta.dart";
 import "package:flutter/http.dart" as http;
 //import "dart:async";
+import "location.dart";
 
 void main() {
   runApp(new MaterialApp(
@@ -60,12 +61,17 @@ class _TrmStaListNowState extends State<TrmStaListNow> {
         children: (_lista == null
             ? new List<ListItem>()
             : (_lista.map((AllSta item) {
+                JavaLocation ourloc = getLastLocation();
                 return new ListItem(
                     isThreeLine: true,
                     leading: new CircleAvatar(
                         child: new Text(item.locrow.stanum.toString())),
                     title: new Text(
-                        item.data.addr + " " + item.locrow.row.toString()),
+                        item.data.addr + " " + item.locrow.row.toString()+
+                      ourloc.distanceTo(new JavaLocation(getLastLocation(),
+                    item.locrow.loc.lat.toDouble(),
+                    item.locrow.loc.lon.toDouble()
+                  )).toString()+"m",
                     subtitle: new Text("█" * item.locrow.row.dostrow +
                         "▒" * item.locrow.row.wolrow));
               })))));
