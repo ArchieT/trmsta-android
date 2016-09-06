@@ -65,15 +65,17 @@ class _TrmStaListNowState extends State<TrmStaListNow> {
                 return new ListItem(
                     isThreeLine: true,
                     leading: new CircleAvatar(
-                        child: new Text(item.locrow.stanum.toString()
-                      )
-                    ),
-                    title: new Text(
-                        item.data.addr + " " + item.locrow.row.toString()+
-                      ourloc.distanceTo(new JavaLocation(getLastLocation(),
-                    item.locrow.loc.lat.toDouble(),
-                    item.locrow.loc.lon.toDouble()
-                  )).toString()+"m"),
+                        child: new Text(item.locrow.stanum.toString())),
+                    title: new Text(item.data.addr +
+                        " " +
+                        item.locrow.row.toString() +
+                        ourloc
+                            .distanceTo(new JavaLocation(
+                                getLastLocation(),
+                                item.locrow.location.lat.toDouble(),
+                                item.locrow.location.lon.toDouble()))
+                            .toString() +
+                        "m"),
                     subtitle: new Text("█" * item.locrow.row.dostrow +
                         "▒" * item.locrow.row.wolrow));
               })))));
